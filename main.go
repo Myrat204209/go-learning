@@ -2,11 +2,13 @@ package main
 
 func getExpenseReport(e expense) (string, float64) {
 	tp, ok := e.(email)
-	if !ok {
-		return "", 0.0
-	} else {
+	if ok {
 		return tp.toAddress, tp.cost()
 	}
+	if tp, ok := e.(sms); ok {
+		return tp.toPhoneNumber, tp.cost()
+	}
+	return "", 0.0
 
 }
 
