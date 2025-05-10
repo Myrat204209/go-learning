@@ -1,15 +1,14 @@
 package main
 
 func getExpenseReport(e expense) (string, float64) {
-	tp, ok := e.(email)
-	if ok {
-		return tp.toAddress, tp.cost()
+	switch v := e.(type) {
+	case email:
+		return v.toAddress, v.cost()
+	case sms:
+		return v.toPhoneNumber, v.cost()
+	default:
+		return "", 0.0
 	}
-	if tp, ok := e.(sms); ok {
-		return tp.toPhoneNumber, tp.cost()
-	}
-	return "", 0.0
-
 }
 
 // don't touch below this line
