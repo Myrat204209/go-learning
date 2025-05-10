@@ -1,34 +1,52 @@
 package main
 
-type Formatter interface {
-	Format() string
-}
-type PlainText struct {
-	message string
+type notification interface {
+	importance() int
 }
 
-func (p PlainText) Format() string {
-	return p.message
+type directMessage struct {
+	senderUsername string
+	messageContent string
+	priorityLevel  int
+	isUrgent       bool
 }
 
-type Bold struct {
-	message string
+func (d directMessage) importance() int {
+	if d.isUrgent {
+		return 50
+	} else {
+		return d.priorityLevel
+	}
 }
 
-func (b Bold) Format() string {
-	return "**" + b.message + "**"
+type groupMessage struct {
+	groupName      string
+	messageContent string
+	priorityLevel  int
 }
 
-type Code struct {
-	message string
+func (g groupMessage) importance() int {
+	return g.priorityLevel
 }
 
-func (c Code) Format() string {
-	return "`" + c.message + "`"
+type systemAlert struct {
+	alertCode      string
+	messageContent string
 }
 
-// Don't Touch below this line
+func (s systemAlert) importance() int {
+	return 100
+}
 
-func SendMessage(formatter Formatter) string {
-	return formatter.Format() // Adjusted to call Format without an argument
+func processNotification(n notification) (string, int) {
+	switch p := n.(type) {
+	case directMessage:
+		return p.senderUsername, p.importance()
+	case groupMessage:
+		return p.groupName, p.importance()
+	case systemAlert:
+		return p.alertCode, p.importance()
+	default:
+		return "", 0
+	}
 }
