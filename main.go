@@ -1,16 +1,12 @@
 package main
 
-type cost struct {
-	day   int
-	value float64
-}
-
-func getDayCosts(costs []cost, day int) []float64 {
-	var result = make([]float64,0,len(costs)) 
-	for _, c := range costs {
-		if c.day == day {
-			result = append(result,c.value) 
+func indexOfFirstBadWord(msg []string, badWords []string) int {
+	for i, word := range msg {
+		for _, badWord := range badWords {
+			if word == badWord {
+				return i
+			}
 		}
 	}
-	return result
+	return -1
 }
