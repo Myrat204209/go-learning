@@ -1,23 +1,35 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
-func fizzbuzz() {
-	for i := 1; i <= 100; i++ {
-		if i%15 == 0 {
-			fmt.Println("FizzBuzz")
-		} else if i%3 == 0 {
-			fmt.Println("Fizz")
-		} else if i%5 == 0 {
-			fmt.Println("Buzz")
-		} else {
-			fmt.Printf("%d\n", i)
+func printPrimes(max int) {
+	fmt.Println("2")
+	for i := 3; i <= max; i += 2 {
+		fl := false
+		for j := 3; j*j <= i; j += 2 {
+			if i%j == 0 {
+				fl = true
+				continue
+			}
+		}
+		if fl == false {
+			fmt.Println(i)
 		}
 	}
 }
 
-// don't touch below this line
+// don't edit below this line
+
+func test(max int) {
+	fmt.Printf("Primes up to %v:\n", max)
+	printPrimes(max)
+	fmt.Println("===============================================================")
+}
 
 func main() {
-	fizzbuzz()
+	test(10)
+	test(20)
+	test(30)
 }
