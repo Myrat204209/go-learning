@@ -1,9 +1,9 @@
 package main
 
-func getMessageCosts(messages []string) []float64 {
-	cost := make([]float64, len(messages))
-	for i := 0; i < len(messages); i++ {
-		cost[i] = float64(len(messages[i])) * 0.01
+func sum(nums ...int) int {
+	sum := 0
+	for i := 0; i < len(nums); i++ {
+		sum += nums[i]
 	}
-	return cost
+	return sum
 }
