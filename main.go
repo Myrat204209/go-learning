@@ -1,12 +1,13 @@
 package main
 
-import "slices"
-
-func indexOfFirstBadWord(msg []string, badWords []string) int {
-	for i, word := range msg {
-		if slices.Contains(badWords, word) {
-				return i
-			}
+func createMatrix(rows, cols int) [][]int {
+	matrix := [][]int{}
+	for i := range rows {
+		row := []int{}
+		for j := range cols {
+			row = append(row, i*j)
+		}
+		matrix = append(matrix, row)
 	}
-	return -1
+	return matrix
 }
