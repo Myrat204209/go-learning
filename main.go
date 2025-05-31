@@ -1,21 +1,30 @@
 package main
 
-func isValidPassword(password string) bool {
-	if len(password) < 5 || len(password) > 12 {
-		return false
+import (
+	"strings"
+)
+
+type sms struct {
+	id      string
+	content string
+	tags    []string
+}
+
+func tagMessages(messages []sms, tagger func(sms) []string) []sms {
+	for i := 0; i < len(messages); i++ {
+		messages[i].tags = tagger(messages[i])
 	}
-	hasUpper, hasDigit := false, false
-	for _, char := range password {
-		if char >= 'A' && char <= 'Z' {
-			hasUpper = true
-		}
-		if char >= '0' && char <= '9' {
-			hasDigit = true
-		}
+	return messages
+}
+
+func tagger(msg sms) []string {
+	tags := []string{}
+	tag := strings.ToLower(msg.content)
+	if strings.Contains(tag, "urgent") {
+		tags = append(tags, "Urgent")
 	}
-	if hasUpper && hasDigit {
-		return true
-	} else {
-		return false
+	if strings.Contains(tag, "sale") {
+		tags = append(tags, "Promo")
 	}
+	return tags
 }
