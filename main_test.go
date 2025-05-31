@@ -7,19 +7,21 @@ import (
 
 func Test(t *testing.T) {
 	type testCase struct {
-		numMessages int
-		expected    float64
+		costMultiplier   float64
+		maxCostInPennies int
+		expected         int
 	}
+
 	runCases := []testCase{
-		{10, 10.45},
-		{20, 21.9},
+		{1.1, 5, 4},
+		{1.3, 10, 5},
+		{1.35, 25, 7},
 	}
 
 	submitCases := append(runCases, []testCase{
-		{0, 0.0},
-		{1, 1.0},
-		{5, 5.10},
-		{30, 34.35},
+		{1.2, 1, 1},
+		{1.2, 15, 7},
+		{1.3, 20, 7},
 	}...)
 
 	testCases := runCases
@@ -32,23 +34,23 @@ func Test(t *testing.T) {
 	failCount := 0
 
 	for _, test := range testCases {
-		output := bulkSend(test.numMessages)
-		if fmt.Sprintf("%.2f", output) != fmt.Sprintf("%.2f", test.expected) {
+		output := getMaxMessagesToSend(test.costMultiplier, test.maxCostInPennies)
+		if output != test.expected {
 			failCount++
 			t.Errorf(`---------------------------------
-Inputs:     (%v)
-Expecting:  %.2f
-Actual:     %.2f
+Inputs:     (%v, %v)
+Expecting:  %v
+Actual:     %v
 Fail
-`, test.numMessages, test.expected, output)
+`, test.costMultiplier, test.maxCostInPennies, test.expected, output)
 		} else {
 			passCount++
 			fmt.Printf(`---------------------------------
-Inputs:     (%v)
-Expecting:  %.2f
-Actual:     %.2f
+Inputs:     (%v, %v)
+Expecting:  %v
+Actual:     %v
 Pass
-`, test.numMessages, test.expected, output)
+`, test.costMultiplier, test.maxCostInPennies, test.expected, output)
 		}
 	}
 

@@ -1,9 +1,16 @@
 package main
 
-func bulkSend(numMessages int) float64 {
-	total := 0.0
-	for i:=0; i<numMessages;i++ {
-		total+= float64(i) * 0.01;
+func getMaxMessagesToSend(costMultiplier float64, maxCostInPennies int) int {
+	actualCostInPennies := 1.0
+	maxMessagesToSend := 1
+	balance := float64(maxCostInPennies) - actualCostInPennies
+	for balance > 0{
+		actualCostInPennies *= costMultiplier
+		balance -= actualCostInPennies
+		maxMessagesToSend++
 	}
-	return total + float64(numMessages)
+	if balance < 0 {
+		maxMessagesToSend--
+	}
+	return maxMessagesToSend
 }
