@@ -1,10 +1,18 @@
 package main
 
-func getCounts(messagedUsers []string, validUsers map[string]int) {
-	for _, user := range messagedUsers {
-		if _, exists := validUsers[user]; exists {
-			validUsers[user]++
+func getNameCounts(names []string) map[rune]map[string]int {
+	counts := make(map[rune]map[string]int)
+
+	for _, name := range names {
+		if len(name)==0 {
+			continue
 		}
+		runes := []rune(name)
+		first:= rune(runes[0])
+		if _, ok := counts[first]; !ok {
+			counts[first] = make(map[string]int)
+		}
+		counts[first][name] = counts[first][name]+1
 	}
+	return counts
 }
- 
